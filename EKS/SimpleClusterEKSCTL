@@ -1,0 +1,23 @@
+#creating EKS cluster
+eksctl create cluster \
+ --name demo-nodegroup \
+ --without-nodegroup \
+ --region=us-east-1 \
+ --zones=us-east-1a,us-east-1b
+
+#creating nodegroup and attaching it to above cluster
+eksctl create nodegroup \
+--cluster demo-nodegroup \
+--name node-group \
+--node-type t3.small \
+--nodes 3 \
+--nodes-min 1 \
+--nodes-max 4
+
+#creating a pod in cluster
+kubectl run nignx --image nginx
+
+#exposing the pod in the cluster
+kubectl expose pod nignx --type NodePort --port 80 --target-port 80 --name web
+
+#make sure the SG of the nodes have open inbound traffic else you wont be able to access the site via internet.
