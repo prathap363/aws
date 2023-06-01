@@ -15,9 +15,9 @@ eksctl create nodegroup \
 --nodes-max 4
 
 #creating a pod in cluster
-kubectl run nignx --image nginx
+kubectl run nginx --image nginx
 
 #exposing the pod in the cluster
-kubectl expose pod nignx --type NodePort --port 80 --target-port 80 --name web
+kubectl expose pod nginx --type NodePort --port 80 --target-port 80 --name web
 
 #make sure the SG of the nodes have open inbound traffic else you wont be able to access the site via internet.
