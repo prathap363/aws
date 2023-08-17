@@ -1,4 +1,4 @@
-This docker file has below componentes installed and pre-configured
+# This docker file has below componentes installed and pre-configured #
 
 1.python3
 2.EKSCTL latest
