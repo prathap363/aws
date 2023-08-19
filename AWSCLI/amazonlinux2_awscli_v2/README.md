@@ -7,4 +7,4 @@
 5.terraform v [custom - needs to be specified while building the image ]
 
 step to build image
-docker image build -t <imagename> --build-arg TERRAFORM_VERSION=1.4.6 .
+docker image build -t <imagename> --build-arg TERRAFORM_VERSION=1.4.6 --build-arg HELM_VERSION=3.12.3 .
