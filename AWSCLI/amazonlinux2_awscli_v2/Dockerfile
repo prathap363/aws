@@ -1,6 +1,7 @@
 # Based upon https://github.com/aws/aws-cli/blob/2.0.10/docker/Dockerfile
 FROM amazonlinux:2 as installer
 ARG TERRAFORM_VERSION
+ARG HELM_VERSION
 RUN yum update -y \
   && yum install -y unzip \
   && yum install -y tar \
@@ -18,7 +19,9 @@ RUN yum update -y \
   && unzip terraform.zip \
   && wget -q "https://dl.k8s.io/release/v1.27.2/bin/linux/amd64/kubectl"\
   && wget -q "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_Linux_amd64.tar.gz" \
- && tar -xf eksctl_Linux_amd64.tar.gz
+  && wget -q "https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz" \
+  && tar -xf eksctl_Linux_amd64.tar.gz \
+  && tar -xf helm-v${HELM_VERSION}-linux-amd64.tar.gz
 
 FROM amazonlinux:2
 COPY --from=installer /usr/local/aws-cli/ /usr/local/aws-cli/
@@ -26,7 +29,7 @@ COPY --from=installer /aws-cli-bin/ /usr/local/bin/
 COPY --from=installer terraform /usr/bin/
 COPY --from=installer kubectl /usr/local/bin/
 COPY --from=installer eksctl /usr/local/bin/
-
+COPY --from=installer linux-amd64/helm /usr/local/bin/
 
 RUN yum update -y \
   && yum install -y less groff jq \
